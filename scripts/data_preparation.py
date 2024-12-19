@@ -8,7 +8,7 @@ def load_data(db_url, query):
         df = pd.read_sql(query, connection)
     return df
 
-def clean_data_with_iqr(df):
+def clean_data(df):
     # Separate numeric and non-numeric columns
     numeric_cols = df.select_dtypes(include=['number']).columns
     non_numeric_cols = df.select_dtypes(exclude=['number']).columns
