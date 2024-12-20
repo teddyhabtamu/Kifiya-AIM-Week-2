@@ -1,43 +1,38 @@
 # Week-2: Telecom Data Analysis and User Insights
 
-## Project Overview
+## Key Tasks
 
-This project involves analyzing telecom data from TellCo, a mobile service provider, to uncover insights into customer behavior, user engagement, and satisfaction. The analysis will guide strategic decisions for potential investment or operational improvements.
+### Task 1: User Overview Analysis
+**Steps:**
+- Identify the top 10 handsets and top 3 manufacturers.
+- Aggregate user behavior metrics:
+  - Number of sessions.
+  - Total upload/download data.
+  - Total session duration.
+- Conduct exploratory data analysis (EDA).
 
-### Key Objectives:
-1. Perform User Overview Analysis:
-   - Identify the most commonly used handsets and manufacturers.
-   - Aggregate and analyze user behavior metrics for applications like YouTube, Social Media, and more.
-2. Analyze User Engagement:
-   - Measure session frequency, duration, and total traffic.
-   - Cluster users based on engagement metrics using k-means.
-3. Provide actionable insights to improve user experience and engagement.
+**Key Deliverables:**
+- List of top handsets and manufacturers.
+- Insights into user behavior patterns.
+- Recommendations for marketing and product teams.
+
+### Task 2: User Engagement Analysis
+**Steps:**
+- Calculate session frequency, session duration, and total upload/download traffic.
+- Normalize engagement metrics and apply k-means clustering (k=3).
+- Compute aggregate metrics (min, max, average) per cluster.
+- Visualize traffic trends for the top 3 most used applications.
+
+**Key Deliverables:**
+- Top 10 users by engagement metrics.
+- User clusters with engagement patterns.
+- Visualizations showing trends and insights.
 
 ---
 
-## Folder Structure
+## Installation and Setup
 
-```plaintext
-├── .vscode/
-│   └── settings.json
-├── .github/
-│   └── workflows/
-│       ├── unittests.yml
-├── scripts/
-│   ├── __init__.py
-│   ├── user_overview.py
-│   └── user_engagement.py
-├── notebooks/
-│   ├── eda_user_overview.ipynb
-│   └── eda_user_engagement.ipynb
-├── tests/
-│   ├── test_user_overview.py
-│   └── test_user_engagement.py
-├── data/
-│   ├── telecom.sql
-│   ├── telecom_schema.png
-│   └── sample_data.csv
-├── requirements.txt
-├── Dockerfile
-├── README.md
-└── main.py
+### 1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/week-2-telecom-analysis.git
+cd week-2-telecom-analysis
