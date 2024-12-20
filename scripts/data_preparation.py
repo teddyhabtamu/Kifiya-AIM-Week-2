@@ -71,6 +71,53 @@ def aggregate_user_behavior(df):
     df_aggregated.rename(columns={'Bearer Id': 'xDR_sessions', 'Dur. (ms)': 'session_duration'}, inplace=True)
     return df_aggregated
 
+def aggregate_handset_frequency(df):
+    handset_frequency = df['Handset Type'].value_counts().reset_index()
+    handset_frequency.columns = ['Handset Type', 'Frequency']
+    return handset_frequency
+
+def plot_top_handsets(df, top_n=10):
+    top_handsets = df.head(top_n)
+    
+    plt.figure(figsize=(12, 8))
+    plt.barh(top_handsets['Handset Type'], top_handsets['Frequency'], color='skyblue')
+    plt.xlabel('Frequency')
+    plt.ylabel('Handset Type')
+    plt.title(f'Top {top_n} Handsets by Frequency')
+    plt.gca().invert_yaxis()  # Invert y-axis to have the highest frequency on top
+    plt.show()
+
+def aggregate_manufacturer_frequency(df):
+    manufacturer_frequency = df['Handset Manufacturer'].value_counts().reset_index()
+    manufacturer_frequency.columns = ['Handset Manufacturer', 'Frequency']
+    return manufacturer_frequency
+
+def plot_top_manufacturers(df, top_n=3):
+    top_manufacturers = df.head(top_n)
+    other_manufacturers = pd.DataFrame([['Others', df['Frequency'][top_n:].sum()]], columns=['Handset Manufacturer', 'Frequency'])
+    top_manufacturers = pd.concat([top_manufacturers, other_manufacturers], ignore_index=True)
+    
+    plt.figure(figsize=(8, 8))
+    plt.pie(top_manufacturers['Frequency'], labels=top_manufacturers['Handset Manufacturer'], autopct='%1.1f%%', startangle=140, colors=['skyblue', 'lightgreen', 'lightcoral', 'lightgrey'])
+    plt.title(f'Market Share of Top {top_n} Handset Manufacturers')
+    plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.show()
+
+def plot_top_handsets_per_manufacturer(df, top_n_manufacturers=3, top_n_handsets=5):
+    top_manufacturers = df['Handset Manufacturer'].value_counts().head(top_n_manufacturers).index
+    fig, axes = plt.subplots(nrows=top_n_manufacturers, ncols=1, figsize=(12, 8 * top_n_manufacturers))
+    
+    for i, manufacturer in enumerate(top_manufacturers):
+        top_handsets = df[df['Handset Manufacturer'] == manufacturer]['Handset Type'].value_counts().head(top_n_handsets)
+        axes[i].barh(top_handsets.index, top_handsets.values, color='skyblue')
+        axes[i].set_title(f'Top {top_n_handsets} Handsets for {manufacturer}')
+        axes[i].set_xlabel('Frequency')
+        axes[i].set_ylabel('Handset Type')
+        axes[i].invert_yaxis()  # Invert y-axis to have the highest frequency on top
+    
+    plt.tight_layout()
+    plt.show()
+
 def sanitize_filename(filename):
     return "".join([c if c.isalnum() else "_" for c in filename])
 
