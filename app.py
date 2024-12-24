@@ -6,7 +6,26 @@ import pandas as pd
 import plotly.express as px
 
 # Initialize the Dash app
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LUX])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.LUX],
+                meta_tags=[
+                    {"name": "apple-touch-icon", "sizes": "57x57", "href": "/assets/apple-icon-57x57.png"},
+                    {"name": "apple-touch-icon", "sizes": "60x60", "href": "/assets/apple-icon-60x60.png"},
+                    {"name": "apple-touch-icon", "sizes": "72x72", "href": "/assets/apple-icon-72x72.png"},
+                    {"name": "apple-touch-icon", "sizes": "76x76", "href": "/assets/apple-icon-76x76.png"},
+                    {"name": "apple-touch-icon", "sizes": "114x114", "href": "/assets/apple-icon-114x114.png"},
+                    {"name": "apple-touch-icon", "sizes": "120x120", "href": "/assets/apple-icon-120x120.png"},
+                    {"name": "apple-touch-icon", "sizes": "144x144", "href": "/assets/apple-icon-144x144.png"},
+                    {"name": "apple-touch-icon", "sizes": "152x152", "href": "/assets/apple-icon-152x152.png"},
+                    {"name": "apple-touch-icon", "sizes": "180x180", "href": "/assets/apple-icon-180x180.png"},
+                    {"name": "icon", "type": "image/png", "sizes": "192x192", "href": "/assets/android-icon-192x192.png"},
+                    {"name": "icon", "type": "image/png", "sizes": "32x32", "href": "/assets/favicon-32x32.png"},
+                    {"name": "icon", "type": "image/png", "sizes": "96x96", "href": "/assets/favicon-96x96.png"},
+                    {"name": "icon", "type": "image/png", "sizes": "16x16", "href": "/assets/favicon-16x16.png"},
+                    {"name": "manifest", "href": "/assets/manifest.json"},
+                    {"name": "msapplication-TileColor", "content": "#ffffff"},
+                    {"name": "msapplication-TileImage", "content": "/assets/ms-icon-144x144.png"},
+                    {"name": "theme-color", "content": "#ffffff"}
+                ])
 
 # Load data
 df_engagement = pd.read_csv('https://drive.google.com/uc?id=1PRi1QZW6vOP9I13kpX4YamAXFOwCr-Nm')
@@ -21,6 +40,7 @@ app.layout = dbc.Container([
         color="primary",
         dark=True,
         children=[
+            dbc.NavItem(dbc.NavLink("User Overview", href="/user-overview")),
             dbc.NavItem(dbc.NavLink("User Engagement", href="/user-engagement")),
             dbc.NavItem(dbc.NavLink("Experience Analysis", href="/experience-analysis")),
             dbc.NavItem(dbc.NavLink("Satisfaction Analysis", href="/satisfaction-analysis")),
@@ -31,8 +51,7 @@ app.layout = dbc.Container([
             dbc.Card([
                 dbc.CardBody([
                     html.H4("Welcome to the Telecom Dashboard", className="card-title"),
-                    html.P("This dashboard provides insights into user engagement, experience, and satisfaction.", className="card-text"),
-                    html.P("Use the navigation bar to explore the different analyses.", className="card-text")
+                    html.P("Use the navigation bar to explore different analyses.", className="card-text")
                 ])
             ], color="info", outline=True)
         ], width=12),
@@ -44,36 +63,27 @@ app.layout = dbc.Container([
 # Define the callback to update the page content
 @app.callback(Output('page-content', 'children'), [Input('url', 'pathname')])
 def display_page(pathname):
-    try:
-        if pathname == '/user-overview':
-            return user_overview_layout()
-        elif pathname == '/user-engagement':
-            return user_engagement_layout()
-        elif pathname == '/experience-analysis':
-            return experience_analysis_layout()
-        elif pathname == '/satisfaction-analysis':
-            return satisfaction_analysis_layout()
-        else:
-            return home_layout()
-    except Exception as e:
-        return dbc.Container([
-            html.H1("Error"),
-            html.P(f"An error occurred: {e}")
-        ])
+    if pathname == '/user-overview':
+        return user_overview_layout()
+    elif pathname == '/user-engagement':
+        return user_engagement_layout()
+    elif pathname == '/experience-analysis':
+        return experience_analysis_layout()
+    elif pathname == '/satisfaction-analysis':
+        return satisfaction_analysis_layout()
+    else:
+        return home_layout()
 
-# Define the home layout
-def home_layout():
+# Define the user overview layout
+def user_overview_layout():
+    fig = px.histogram(df_engagement, x='session_frequency', title='Session Frequency Distribution')
     return dbc.Container([
-        dbc.Row([
-            dbc.Col([
-                dbc.Card([
-                    dbc.CardBody([
-                        html.H4("Welcome to the Telecom Dashboard", className="card-title"),
-                        html.P("This is the main page where you can navigate to various analyses using the menu above.", className="card-text")
-                    ])
-                ], color="info", outline=True)
-            ], width=12),
-        ], className="mb-4"),
+        html.H3("User Overview Analysis", className="mb-3"),
+        dbc.Card([
+            dbc.CardBody([
+                dcc.Graph(figure=fig)
+            ])
+        ])
     ])
 
 # Define the user engagement layout
@@ -81,7 +91,6 @@ def user_engagement_layout():
     fig = px.scatter(df_engagement, x='session_duration', y='total_traffic', title='Session Duration vs Total Traffic')
     return dbc.Container([
         html.H3("User Engagement Analysis", className="mb-3"),
-        html.P("This analysis explores the relationship between session duration and total data traffic.", className="lead"),
         dbc.Card([
             dbc.CardBody([
                 dcc.Graph(figure=fig)
@@ -94,7 +103,6 @@ def experience_analysis_layout():
     fig = px.box(df_experience, x='Handset Type', y='Average Throughput', title='Average Throughput per Handset Type')
     return dbc.Container([
         html.H3("Experience Analysis", className="mb-3"),
-        html.P("This section compares the average throughput across different handset types to understand their performance.", className="lead"),
         dbc.Card([
             dbc.CardBody([
                 dcc.Graph(figure=fig)
@@ -107,7 +115,6 @@ def satisfaction_analysis_layout():
     fig = px.scatter(df_satisfaction, x='engagement_score', y='experience_score', title='Engagement Score vs Experience Score')
     return dbc.Container([
         html.H3("Satisfaction Analysis", className="mb-3"),
-        html.P("This analysis explores the relationship between user engagement and overall satisfaction scores.", className="lead"),
         dbc.Card([
             dbc.CardBody([
                 dcc.Graph(figure=fig)
