@@ -3,3 +3,9 @@ scikit-learn
 streamlit
 sqlalchemy
 psycopg2-binary
+dash
+dash-bootstrap-components
+plotly
+gunicorn
+gdown
+
