@@ -71,8 +71,6 @@ def display_page(pathname):
         return experience_analysis_layout()
     elif pathname == '/satisfaction-analysis':
         return satisfaction_analysis_layout()
-    else:
-        return home_layout()
 
 # Define the user overview layout
 def user_overview_layout():
