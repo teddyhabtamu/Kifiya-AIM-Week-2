@@ -9,9 +9,9 @@ import plotly.express as px
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # Load data
-df_engagement = pd.read_csv('data/user_engagement_aggregated.csv')
-df_experience = pd.read_csv('data/user_experience_aggregated.csv')
-df_satisfaction = pd.read_csv('data/user_satisfaction_scores.csv')
+df_engagement = pd.read_csv('https://drive.google.com/file/d/1PRi1QZW6vOP9I13kpX4YamAXFOwCr-Nm/view?usp=sharing')
+df_experience = pd.read_csv('https://drive.google.com/file/d/1wOVFHfEQn9uKoV7uGEqTPNvAg5-0AgfX/view?usp=drive_link')
+df_satisfaction = pd.read_csv('https://drive.google.com/file/d/1P7ndGXOGoqDjmMUxGvc6QQtCEhx6H5Ja/view?usp=drive_link')
 
 # Define the layout
 app.layout = dbc.Container([
